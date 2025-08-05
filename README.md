@@ -1,4 +1,41 @@
 # Infra
+infra-repo/
+├── base/                      # 공통 기본 리소스 (네임스페이스, 스토리지 등)
+│   ├── namespace.yaml
+│   ├── storage-class.yaml
+│   └── common-configmap.yaml  # 필요 시
+│
+├── overlays/                  # 환경별 설정 (dev, staging, prod)
+│   ├── dev/
+│   │   └── kustomization.yaml
+│   ├── staging/
+│   │   └── kustomization.yaml
+│   └── prod/
+│       └── kustomization.yaml
+│
+└── services/                  # 각 서비스별 쿠버네티스 리소스 모음
+    ├── kafka/
+    │   ├── kafka-deployment.yaml
+    │   ├── kafka-service.yaml
+    │   └── zookeeper-deployment.yaml
+    │
+    ├── redis/
+    │   ├── redis-deployment.yaml
+    │   └── redis-service.yaml
+    │
+    ├── nginx/
+    │   ├── nginx-deployment.yaml
+    │   └── nginx-ingress.yaml
+    │
+    ├── backend/
+    │   ├── deployment.yaml
+    │   └── service.yaml
+    │
+    └── ai/
+        ├── deployment.yaml
+        └── service.yaml
+
+
 
 1. redis/ 폴더
 Redis 서버 관련 쿠버네티스 리소스(YAML) 파일 모음
