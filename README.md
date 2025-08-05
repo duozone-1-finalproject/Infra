@@ -68,5 +68,14 @@ overlays/dev/kustomization.yaml → 개발환경에 맞춘 설정
 
 overlays/prod/kustomization.yaml → 운영환경에 맞춘 설정
 
+# Helm 저장소 추가 (없으면)
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+# ingress-nginx 설치 (myapp 네임스페이스에 설치 예시)
+kubectl create namespace ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
+
+
 kustomize를 사용하면 YAML 파일을 중복 없이 효율적으로 관리할 수 있음
 
