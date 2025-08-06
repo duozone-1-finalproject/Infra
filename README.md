@@ -1,81 +1,52 @@
-# Infra
-infra-repo/
-├── base/                      # 공통 기본 리소스 (네임스페이스, 스토리지 등)
-│   ├── namespace.yaml
-│   ├── storage-class.yaml
-│   └── common-configmap.yaml  # 필요 시
-│
-├── overlays/                  # 환경별 설정 (dev, staging, prod)
-│   ├── dev/
-│   │   └── kustomization.yaml
-│   ├── staging/
-│   │   └── kustomization.yaml
-│   └── prod/
-│       └── kustomization.yaml
-│
-└── services/                  # 각 서비스별 쿠버네티스 리소스 모음
-    ├── kafka/
-    │   ├── kafka-deployment.yaml
-    │   ├── kafka-service.yaml
-    │   └── zookeeper-deployment.yaml
-    │
-    ├── redis/
-    │   ├── redis-deployment.yaml
-    │   └── redis-service.yaml
-    │
-    ├── nginx/
-    │   ├── nginx-deployment.yaml
-    │   └── nginx-ingress.yaml
-    │
-    ├── backend/
-    │   ├── deployment.yaml
-    │   └── service.yaml
-    │
-    └── ai/
-        ├── deployment.yaml
-        └── service.yaml
+# Infra Repository
+
+이 리포지토리는 쿠버네티스 기반 인프라 리소스들을 관리하기 위한 구성으로, `kustomize`를 활용해 환경별로 효율적인 배포 및 유지보수가 가능하도록 설계되었습니다.
+
+## 📁 디렉토리 구조
+
+Infra/
+├── base/ # 공통 리소스
+├── overlays/ # 환경별 설정 (dev, staging, prod)
+├── services/ # 서비스별 리소스 정의 (Kafka, Redis, Nginx 등)
 
 
+---
 
-1. redis/ 폴더
-Redis 서버 관련 쿠버네티스 리소스(YAML) 파일 모음
+### 1. `base/`
 
-Redis는 보통 캐시나 세션 저장소로 쓰이는 인프라 서비스야
+- **공통 리소스** (모든 환경에서 공유)
+  - `namespace.yaml`: 네임스페이스 정의
+  - `storage-class.yaml`: 스토리지 클래스 정책
+  - `common-configmap.yaml`: 공통 환경 설정 (필요 시)
 
-예: redis-deployment.yaml, redis-service.yaml 같은 파일들이 여기 들어감
+---
 
-2. base/ 폴더
-쿠버네티스 리소스의 공통 기본 설정 모음
+### 2. `services/`
 
-네임스페이스, 스토리지 클래스, 공통 ConfigMap, RBAC 등
+- **각 서비스별 쿠버네티스 리소스 정의**
+  - `kafka/`: Kafka & Zookeeper 배포 리소스
+  - `redis/`: Redis 캐시 서버 배포 리소스
+  - `nginx/`: Nginx Ingress Controller 관련 설정
+  - `backend/`: 백엔드 서비스 배포 리소스
+  - `ai/`: AI 서비스 배포 리소스
 
-여러 서비스가 공유하는 기본 리소스를 따로 분리해 관리하는 곳
+---
 
-예:
+### 3. `overlays/`
 
-namespace.yaml (모든 서비스가 배포될 네임스페이스 정의)
+- **환경별 오버레이 설정 (`kustomize`)**
+  - `dev/`, `staging/`, `prod/`
+  - 각 환경에 맞는 설정 (예: replica 수, 이미지 태그 등) 적용 가능
+  - 공통 리소스는 `base/`에서 불러와 사용
 
-storage-class.yaml (스토리지 정책)
+---
 
-3. overlays/ 폴더
-kustomize 환경별(Dev, Staging, Prod 등) 오버레이 설정
+## ✅ Kustomize 사용법
 
-기본 base/ 설정을 가져와서 환경별로 다르게 설정(리플리카 수, 이미지 태그 등) 적용
+예시) 개발 환경(`dev`) 배포
 
-예:
-
-overlays/dev/kustomization.yaml → 개발환경에 맞춘 설정
-
-overlays/prod/kustomization.yaml → 운영환경에 맞춘 설정
-
-# Helm 저장소 추가 (없으면)
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-
-# ingress-nginx 설치 (myapp 네임스페이스에 설치 예시)
-kubectl create namespace ingress-nginx
-helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
+```bash
+kubectl apply -k overlays/dev
 
 
-kustomize를 사용하면 YAML 파일을 중복 없이 효율적으로 관리할 수 있음
 
