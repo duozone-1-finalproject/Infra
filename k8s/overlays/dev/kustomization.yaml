@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: myapp
+
+bases:
+  - ../../base
+
+resources:
+  - ../../services/kafka/
+  - ../../services/backend/
+  - ../../services/ai/
+
+patchesStrategicMerge:
+  - replica-patch.yaml
+
+images:
+  - name: your-backend-image
+    newTag: dev-latest
+  - name: your-ai-image
+    newTag: dev-latest
+  - name: your-kafka-image
+    newTag: 3.5.0
