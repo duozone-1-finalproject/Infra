@@ -2,10 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ai
-  labels:
-    app: ai
+  namespace: infra
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ai
@@ -18,18 +17,4 @@ spec:
         - name: ai
           image: ai-image:latest
           ports:
-            - containerPort: 8080
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
-            - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka-service:9092"
-            - name: KAFKA_TOPIC_FROM_BACKEND
-              value: "to-ai"
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1"
+            - containerPort: 5000

@@ -2,10 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  labels:
-    app: backend
+  namespace: infra
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -19,17 +18,3 @@ spec:
           image: backend-image:latest
           ports:
             - containerPort: 8080
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: "prod"
-            - name: KAFKA_BOOTSTRAP_SERVERS
-              value: "kafka-service:9092"   # Kafka 서비스 이름
-            - name: KAFKA_TOPIC_TO_AI
-              value: "to-ai"
-          resources:
-            requests:
-              memory: "512Mi"
-              cpu: "500m"
-            limits:
-              memory: "1Gi"
-              cpu: "1"

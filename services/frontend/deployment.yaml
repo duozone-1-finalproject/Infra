@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: infra
 spec:
   replicas: 1
   selector:
@@ -14,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: hihi1260/frontend:latest
+          image: frontend-image:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 80
