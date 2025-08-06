@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai
+  labels:
+    app: ai
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai
+  template:
+    metadata:
+      labels:
+        app: ai
+    spec:
+      containers:
+        - name: ai
+          image: ai-image:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          # 필요시 환경변수 추가
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1Gi"
+              cpu: "1"
+          # Kafka, Elasticsearch 등 필요한 환경변수 추가 가능
