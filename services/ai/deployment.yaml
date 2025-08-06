@@ -22,7 +22,10 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "prod"
-          # 필요시 환경변수 추가
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-service:9092"
+            - name: KAFKA_TOPIC_FROM_BACKEND
+              value: "to-ai"
           resources:
             requests:
               memory: "512Mi"
@@ -30,4 +33,3 @@ spec:
             limits:
               memory: "1Gi"
               cpu: "1"
-          # Kafka, Elasticsearch 등 필요한 환경변수 추가 가능
