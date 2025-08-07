@@ -9,11 +9,9 @@ resources:
   - ../../services/backend
   - ../../services/ai
   - ../../services/nginx
-  - ../../services/kafka
-  - ../../services/elasticsearch
 
-patchesStrategicMerge:
-  - replica-patch.yaml
+patches:
+  - path: replica-patch.yaml
 
 images:
   - name: backend-image
