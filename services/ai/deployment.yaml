@@ -17,4 +17,4 @@ spec:
         - name: ai
           image: ai-image:latest
           ports:
-            - containerPort: 5000
+            - containerPort: 8081
