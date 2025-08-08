@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend-image:latest
+          image: hihi1260/frontend-image:1.0
           ports:
             - containerPort: 80

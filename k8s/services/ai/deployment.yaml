@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: ai
-          image: ai-image:latest
+          image: hihi1260/ai-image:latest
           ports:
             - containerPort: 8081

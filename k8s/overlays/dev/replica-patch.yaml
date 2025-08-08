@@ -1,3 +1,4 @@
+# backend
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -6,6 +7,7 @@ metadata:
 spec:
   replicas: 1
 ---
+# ai
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,3 +15,13 @@ metadata:
   namespace: infra
 spec:
   replicas: 1
+---
+# frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: infra
+spec:
+  replicas: 2
+---
