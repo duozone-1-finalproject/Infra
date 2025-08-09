@@ -1,3 +1,12 @@
+# frontend
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: infra
+spec:
+  replicas: 1
+---
 # backend
 apiVersion: apps/v1
 kind: Deployment
@@ -6,6 +15,24 @@ metadata:
   namespace: infra
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: hihi1260/backend-image:1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: backend-secret
+
 ---
 # ai
 apiVersion: apps/v1
@@ -15,13 +42,4 @@ metadata:
   namespace: infra
 spec:
   replicas: 1
----
-# frontend
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-  namespace: infra
-spec:
-  replicas: 2
----
+
