@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: infra
 spec:
   replicas: 1
   selector:
@@ -15,7 +14,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: hihi1260/backend-image:1.0
+          image: <ECR_REGISTRY>/srg/backend:latest  # GitHub Actions에서 set-image로 교체
           imagePullPolicy: Always
           ports:
             - containerPort: 8080

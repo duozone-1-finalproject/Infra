@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: infra
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -13,8 +13,19 @@ spec:
       labels:
         app: frontend
     spec:
+      # web_api 역할 노드에서만 실행
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - web_api
       containers:
         - name: frontend
-          image: hihi1260/frontend-image:1.0
+          image: <ECR_REGISTRY>/srg/frontend:<IMAGE_TAG>  # GitHub Actions에서 교체
+          imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 3000
