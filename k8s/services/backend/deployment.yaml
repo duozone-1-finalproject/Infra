@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -12,12 +13,31 @@ spec:
       labels:
         app: backend
     spec:
+      serviceAccountName: backend-service-account # IRSA 서비스 계정
+      affinity:
+      # (기존 affinity 설정과 동일)
       containers:
         - name: backend
-          image: <ECR_REGISTRY>/srg/backend:latest  # GitHub Actions에서 set-image로 교체
+          image: <ECR_REGISTRY>/srg/backend:<IMAGE_TAG>
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          # 1. 동기화된 k8s Secret을 환경변수로 주입 (기존 방식과 동일)
           envFrom:
             - secretRef:
                 name: backend-secret
+
+          # 2. CSI 드라이버가 Secret 동기화를 위해 필요
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+
+      # 3. CSI 드라이버 볼륨 설정
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "backend-aws-secrets"
