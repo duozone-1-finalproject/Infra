@@ -5,3 +5,4 @@ resources:
   - deployment.yaml
   - service.yaml
   - backend-secret-provider.yaml
+  - backend-service-account.yaml
