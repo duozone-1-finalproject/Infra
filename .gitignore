@@ -22,3 +22,29 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Terraform variables that may contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# .terraform directory (provider plugins, modules)
+.terraform/
+
+# Backup files created by Terraform
+*.backup
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Local environment files
+.terraform.lock.hcl
